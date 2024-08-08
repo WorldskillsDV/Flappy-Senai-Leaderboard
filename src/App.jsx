@@ -35,12 +35,13 @@ const App = () => {
     };
 
     createWebSocket();
+    
 
   }, []); 
 
   const sortedPlayers = [...players].sort((a, b) => b.highScore - a.highScore);
 
-  
+
   return (
     <div className="container">
       <div className="column" style={{backgroundColor: '#333'}} >

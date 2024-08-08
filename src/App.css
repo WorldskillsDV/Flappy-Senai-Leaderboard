@@ -1,0 +1,114 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+}
+
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.column {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.player-list {
+  text-align: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.player-item {
+  padding: 15px;
+  margin-left: 6%;
+  margin-right: 6%;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-weight: bold; /* Texto em negrito */
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+
+
+/* primeiro lugar */
+.player-item.gold {
+  background-color: #f7c615; 
+  font-size: 30px;
+  color: #333; 
+}
+
+/* segundo lugar */
+.player-item.silver {
+  background-color: #bfbcbc; 
+  font-size: 26px; 
+  color: #333; 
+}
+
+/* terceiro lugar */
+.player-item.bronze {
+  background-color: #cd7f32; 
+  font-size: 22px; 
+  color: #333; 
+}
+
+/* utros jogadores */
+.player-item.other {
+  background-color: #444; 
+  font-size: 18px; 
+  color: #ddd; 
+}
+
+
+
+/* imagem do QR Code */
+.qr-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.title {
+  font-size: 55px; 
+  color: #cd7f32;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); 
+  margin-bottom: 20px; 
+}
+
+.prize-list{
+  font-size: 40px; 
+  color: #e1b680; 
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); 
+  margin-bottom: 20px; 
+}
+
+/* Estilo do QR Code */
+.qr-code img {
+  border: 2px solid #000000; 
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Texto de escaneie QR Code */
+.qr-code-scan {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #ffffff; 
+  font-weight: bold;
+}
+
+.logo {
+  width: 100px; /* Ajuste o tamanho do logo conforme necessário */
+  height: auto;
+  margin-right: 15px; /* Espaço entre o logo e o texto */
+}

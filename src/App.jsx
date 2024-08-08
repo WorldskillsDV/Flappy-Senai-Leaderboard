@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css'; 
 
-const WebSocketExample = () => {
+const App = () => {
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
@@ -79,4 +79,4 @@ const WebSocketExample = () => {
   );
 };
 
-export default WebSocketExample;
+export default App;

@@ -14,14 +14,22 @@ const App = () => {
         if (data.players) {
           setPlayers(data.players);
         } else if (data.playersWithAlteredPositions) {
+
+
           setPlayers(prevPlayers => {
             const updatedPlayers = [...prevPlayers];
+
             data.playersWithAlteredPositions.forEach(updatedPlayer => {
               const index = updatedPlayers.findIndex(player => player.id === updatedPlayer.id);
+
               if (index !== -1) {
                 updatedPlayers[index] = updatedPlayer;
               }
+              else {
+                updatedPlayers.push(updatedPlayer);
+              }
             });
+
             return updatedPlayers;
           });
         }
@@ -35,36 +43,35 @@ const App = () => {
     };
 
     createWebSocket();
-    
-
   }, []); 
 
   const sortedPlayers = [...players].sort((a, b) => b.highScore - a.highScore);
-
 
   return (
     <div className="container">
       <div className="column" style={{backgroundColor: '#333'}} >
         <h1 style={{textAlign: 'center'}} >Pontuação Flappy-Senai:</h1>
-        <ul className="player-list">
-          {sortedPlayers.length === 0 ? (
-            <li>Nenhum jogador encontrado</li>
-          ) : (
-            sortedPlayers.map((player, index) => {
-              let className = 'player-item';
-              if (index === 0) { className += ' gold' } // Primeiro lugar
-              else if (index === 1) { className += ' silver'} // Segundo lugar
-              else if (index === 2) { className += ' bronze' } // Terceiro lugar
-              else { className += ' other' } // Outros lugares
-              
-              return (
-                <li key={player.id} className={className}>
-                  {player.position} - <span style={{ fontWeight: 'bold' }}>{player.playerName}</span> - {player.highScore} 
-                </li>
-              );
-            })
-          )}
-        </ul>
+        <div style={{overflowY: 'scroll'}}>
+          <ul className="player-list">
+            {sortedPlayers.length === 0 ? (
+              <li>Nenhum jogador encontrado</li>
+            ) : (
+              sortedPlayers.map((player, index) => {
+                let className = 'player-item';
+                if (index === 0) { className += ' gold' } // Primeiro lugar
+                else if (index === 1) { className += ' silver'} // Segundo lugar
+                else if (index === 2) { className += ' bronze' } // Terceiro lugar
+                else { className += ' other' } // Outros lugares
+                
+                return (
+                  <li key={player.id} className={className}>
+                    {player.position} - <span style={{ fontWeight: 'bold' }}>{player.playerName}</span> - {player.highScore} 
+                  </li>
+                );
+              })
+            )}
+          </ul>
+        </div>
       </div>
       <div className="column" style={{backgroundColor: '#444'}} >
         <div className="qr-code">

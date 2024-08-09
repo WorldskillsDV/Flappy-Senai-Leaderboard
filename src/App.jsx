@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import QrCode from "../public/qrcode.png";
 
 const App = () => {
     const [players, setPlayers] = useState([]);
@@ -22,7 +23,7 @@ const App = () => {
                         data.playersWithAlteredPositions.forEach(
                             (updatedPlayer) => {
                                 const index = updatedPlayers.findIndex(
-                                    (player) => player.id === updatedPlayer.id
+                                    (player) => player.id === updatedPlayer.id,
                                 );
 
                                 if (index !== -1) {
@@ -99,12 +100,14 @@ const App = () => {
                     <div className="prize-list">2° Lugar: Tapa</div>
                     <div className="prize-list">3° Lugar: Tapa</div>
 
-          <img src="public/qrcode.png" alt="QR Code" />
-          <div className="qr-code-scan">Escaneie o QR Code para jogar!</div> 
+                    <img src={QrCode} alt="QR Code" />
+                    <div className="qr-code-scan">
+                        Escaneie o QR Code para jogar!
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default App;

@@ -99,7 +99,7 @@ const App = () => {
                     <div className="prize-list">2° Lugar: Tapa</div>
                     <div className="prize-list">3° Lugar: Tapa</div>
 
-          <img src="https://via.placeholder.com/300" alt="QR Code" />
+          <img src="public/qrcode.png" alt="QR Code" />
           <div className="qr-code-scan">Escaneie o QR Code para jogar!</div> 
         </div>
       </div>

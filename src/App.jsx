@@ -9,7 +9,7 @@ const App = () => {
   useEffect(() => {
     const createWebSocket = () => {
       const socket = new WebSocket(
-        "wss://flappy-senai-backend.up.railway.app/leaderboard-ws",
+        "wss://flappy-senai.up.railway.app/leaderboard-ws",
       ); // URL do WebSocket
 
       socket.onmessage = (event) => {

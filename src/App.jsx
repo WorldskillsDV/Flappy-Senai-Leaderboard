@@ -1,46 +1,65 @@
-import { useEffect, useState } from "react";
+import {useEffect,  useRef, useState} from "react";
 import "./App.css";
-import QrCode from "../public/qrcode.png";
+import QrCode from "/qrcode.png";
 import { AnimatePresence, motion } from "framer-motion";
+import { v4 as uuidv4 } from "uuid";
 
 const App = () => {
   const [players, setPlayers] = useState([]);
+  const socketRef = useRef(null);
 
   useEffect(() => {
-    const createWebSocket = () => {
-      const socket = new WebSocket(
-        "wss://flappy-senai.up.railway.app/leaderboard-ws",
-      ); // URL do WebSocket
 
-      socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+    if (!socketRef.current) {
+      const uuid = uuidv4();
+      socketRef.current = new WebSocket(
+        // "wss://flappy-senai.up.railway.app/leaderboard-ws${uuid}",
+        `ws://localhost:8080/leaderboard-ws/${uuid}`,
+      );
+    }
 
-        setPlayers((prevPlayers) => {
-          const updatedPlayers = [...prevPlayers];
+    socketRef.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
 
-          data.forEach((updatedPlayer) => {
-            const index = updatedPlayers.findIndex(
-              (player) => player.id === updatedPlayer.id,
-            );
+      setPlayers((prevPlayers) => {
+        const updatedPlayers = [...prevPlayers];
 
-            if (index !== -1) {
-              updatedPlayers[index] = updatedPlayer;
-            } else {
-              updatedPlayers.push(updatedPlayer);
-            }
-          });
+        data.forEach((updatedPlayer) => {
+          const index = updatedPlayers.findIndex(
+            (player) => player.id === updatedPlayer.id,
+          );
 
-          return updatedPlayers;
+          if (index !== -1) {
+            updatedPlayers[index] = updatedPlayer;
+          } else {
+            updatedPlayers.push(updatedPlayer);
+          }
         });
-      };
-      socket.onerror = (error) => {
-        console.error("Erro:", error);
-      };
 
-      return socket;
+        updatedPlayers.forEach((player) => {
+          const index = data.findIndex((p) => p.id === player.id);
+
+          if (index === -1) {
+            updatedPlayers.remove(player)
+          }
+        });
+
+        return updatedPlayers;
+      });
+
+      socketRef.current.send("Message received");
     };
 
-    createWebSocket();
+    socketRef.current.onerror = (error) => {
+      console.error("Erro:", error);
+    };
+
+    return () => {
+      if (socketRef.current.readyState === WebSocket.OPEN) {
+        socketRef.current.close();
+        socketRef.current = null;
+      }
+    };
   }, []);
 
   const sortedPlayers = [...players].sort((a, b) => b.highScore - a.highScore);

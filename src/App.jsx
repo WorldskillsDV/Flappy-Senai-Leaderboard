@@ -13,8 +13,8 @@ const App = () => {
     if (!socketRef.current) {
       const uuid = uuidv4();
       socketRef.current = new WebSocket(
-        // "wss://flappy-senai.up.railway.app/leaderboard-ws${uuid}",
-        `ws://localhost:8080/leaderboard-ws/${uuid}`,
+        `wss://flappy-senai.up.railway.app/leaderboard-ws/${uuid}`,
+        // `ws://localhost:8080/leaderboard-ws/${uuid}`,
       );
     }
 

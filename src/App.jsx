@@ -1,8 +1,8 @@
-import {useEffect,  useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import "./App.css";
 import QrCode from "/qrcode.png";
-import { AnimatePresence, motion } from "framer-motion";
-import { v4 as uuidv4 } from "uuid";
+import {AnimatePresence, motion} from "framer-motion";
+import {v4 as uuidv4} from "uuid";
 
 const App = () => {
   const [players, setPlayers] = useState([]);
@@ -22,27 +22,32 @@ const App = () => {
       const data = JSON.parse(event.data);
 
       setPlayers((prevPlayers) => {
-        const updatedPlayers = [...prevPlayers];
+        let updatedPlayers = [...prevPlayers];
 
-        data.forEach((updatedPlayer) => {
-          const index = updatedPlayers.findIndex(
-            (player) => player.id === updatedPlayer.id,
-          );
+        // Handle each new player in the data array
+        data.forEach(newPlayer => {
+          const existingPlayerIndex = updatedPlayers.findIndex(player => player.id === newPlayer.id);
 
-          if (index !== -1) {
-            updatedPlayers[index] = updatedPlayer;
+          if (existingPlayerIndex !== -1) {
+            // Update existing player
+            updatedPlayers[existingPlayerIndex] = {...updatedPlayers[existingPlayerIndex], ...newPlayer};
           } else {
-            updatedPlayers.push(updatedPlayer);
+            // Add new player
+            updatedPlayers.push(newPlayer);
           }
         });
 
-        updatedPlayers.forEach((player) => {
-          const index = data.findIndex((p) => p.id === player.id);
-
-          if (index === -1) {
-            updatedPlayers.remove(player)
-          }
-        });
+        if (data.length > 1) {
+          updatedPlayers.forEach(p => {
+            const existingPlayerIndex = data.findIndex(player => player.id === p.id);
+            if (existingPlayerIndex === -1) {
+              const index = updatedPlayers.indexOf(p, 0);
+              if (index > -1) {
+                updatedPlayers.splice(index, 1);
+              }
+            }
+          });
+        }
 
         return updatedPlayers;
       });
@@ -66,19 +71,18 @@ const App = () => {
 
   return (
     <div className="container">
-      <div className="column" style={{ backgroundColor: "#333" }}>
-        <h1 style={{ textAlign: "center" }}>Pontuação Flappy-Senai:</h1>
-        <div style={{ overflowY: "scroll" }}>
+      <div className="column" style={{backgroundColor: "#333"}}>
+        <h1 style={{textAlign: "center"}}>Pontuação Flappy-Senai:</h1>
+        <div style={{overflowY: "scroll"}}>
           <ul className="player-list">
             <AnimatePresence>
               {sortedPlayers.length === 0
                 ? (
                   <motion.li
                     key="empty"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    exit={{opacity: 0}}>
                     Nenhum jogador encontrado
                   </motion.li>
                 )
@@ -96,18 +100,16 @@ const App = () => {
                       <motion.li
                         key={player.id}
                         layout
-                        initial={{ opacity: 0, y: index * 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.3 }}
-                        style={{ position: "relative", zIndex: 1 }}
-                        className={className}
-                      >
-                        {position} -{" "}
-                        <span style={{ fontWeight: "bold" }}>
+                        initial={{opacity: 0, y: index * 10}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: 10}}
+                        transition={{duration: 0.3}}
+                        style={{position: "relative", zIndex: 1}}
+                        className={className}>
+                        {position} - {" "}
+                        <span style={{fontWeight: "bold"}}>
                           {player.playerName}
-                        </span>{" "}
-                        - {player.highScore}
+                        </span>{" "} - {player.highScore}
                       </motion.li>
                     );
                   })
@@ -116,14 +118,14 @@ const App = () => {
           </ul>
         </div>
       </div>
-      <div className="column" style={{ backgroundColor: "#444" }}>
+      <div className="column" style={{backgroundColor: "#444"}}>
         <div className="qr-code">
-          <div className="title">Premios:</div>
-          <div className="prize-list">1° Lugar: Tapa</div>
-          <div className="prize-list">2° Lugar: Tapa</div>
-          <div className="prize-list">3° Lugar: Tapa</div>
+          <div className="title">Prêmios:</div>
+          <div className="prize-list">1° Lugar: Coca 600ml</div>
+          <div className="prize-list">2° Lugar: Mirabel</div>
+          <div className="prize-list">3° Lugar: Uma paçoca</div>
 
-          <img src={QrCode} alt="QR Code" />
+          <img src={QrCode} alt="QR Code"/>
           <div className="qr-code-scan">
             Escaneie o QR Code para jogar!
           </div>
